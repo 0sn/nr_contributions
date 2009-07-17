@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.db import models
 from models import Contribution, Contributor
-Comic = models.get_model('nr_comics', 'comic')
-
 
 class ContributionAdmin(admin.ModelAdmin):
     list_display = ('submitted', 'aka', 'contribution_type', 'content','flagged', 'contributor', 'used')

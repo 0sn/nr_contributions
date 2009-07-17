@@ -1,4 +1,3 @@
-# Create your views here.
 from models import Contributor, Contribution
 from nr_comics.models import Comic
 from nr_utils import render_with_request
