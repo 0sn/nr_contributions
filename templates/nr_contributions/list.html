@@ -2,56 +2,76 @@
 
 {% block title %}Contribute to the Site{% endblock %}
 
-{% block localnews %}{% endblock %}
+{% block headstuff %}
+<style type="text/css" media="screen">
+h4 {font-style: normal;color:red;}
+p.contrib {margin-bottom: 0;}
+#contriblist {width: 150px; float: left;}
+.contribinfo {width: 380px; float: right;}
+#main h3 {margin-left:170px;}
+</style>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+        $("#contributors").tabs();
+        var this_url = document.location.toString();
+        if (this_url.match('#')) {
+            var which_id = $('#' + this_url.split('#')[1]).closest("div").attr("id");
+            if (which_id == undefined) {
+                which_id = $('#' + this_url.split("#")[1]).closest("p").attr("id");
+            };
+            $("a[href='#" + which_id + "']").click();
+        };
+    });
+</script>
+{% endblock %}
 
 {% block bodycontent %}
-<div class="box">
-<h3>How to contribute</h3>
-<p class="nrccs">All you need to do is visit the <a href="/contribute/submit/">NAME REMOVED CONDUCIVE CONTRIBUTION SYSTEM</a>
-    Try it out!</p>
-<p>Simultaneously, scope out <a href="/comics/220/">THIS blank comic</a>, add some text, and mail it in! (fourthpanel at nameremoved dot com) It will almost certainly be posted. Amazing interactivity!</p>
-<h3>List of Contributors</h3>
 <div id="contributors">
-{% if plural %}
-{% for c in plural %}
-    <h4 id="{{ c.contributor.slug }}">{{ c.contributor.name }}</h4>
-    <p>{{ c.contributor.info|safe }}</p>
-    {% for con in c.contributions %}
-        <p class="contribution" id="{{ con.contribution.id }}">
-            <a href="#{{ c.contributor.slug }}">{{ con.contribution.aka }}</a>
-            <em>{{ con.contribution.contribution_type }}</em> {{ con.contribution.content }}
-            <ul class="nav">
-            {% for comic in con.comics %}
-<li><a href="/comics/{{ comic.sequence }}/"><span>{{ comic.date|date:"j F, Y" }}</span> {{ comic.title }}</a></li>
-            {% endfor %}
-            </ul>
-        </p>
+    <h3>Contributors</h3>
+<ul class="nav" id="contriblist">
+    {% for c in plural %}
+        <li><a href="#{{ c.contributor.slug }}">{{ c.contributor.name }}</a></li>
     {% endfor %}
-{% endfor %}    
-{% endif %}
-{% if single %}
-{% for c in single|dictsort:"aka" %}
-<h4>{{ c.contribution.aka }}</h4>
-<p class="contribution" id="{{ c.contribution.id }}">
-    <em>{{ c.contribution.contribution_type }}</em>
-    {{ c.contribution.content }}
-    <ul class="nav">
-        {% for comic in c.comics %}
-<li><a href="/comics/{{ comic.sequence }}/"><span>{{ comic.date|date:"j F, Y" }}</span> {{ comic.title }}</a></li>
-        {% endfor%}
-    </ul>
-</p>
-{% endfor %}
-{% endif %}
+        <li><a href="#single">Other</a></li>
+</ul>
+{% for c in plural %}
+<div id="{{ c.contributor.slug}}" class="contribinfo">
+    <h4>{{ c.contributor.name }}</h4>
+        <p>{{ c.contributor.info|safe }}</p>
+    {% for con in c.contributions %}
+        <p id="{{ con.contribution.id }}" class="contrib">
+            {{ con.contribution.aka }} {{ con.contribution.contribution_type }}
+            {{ con.contribution.content }}</p>
+            <ul class="nav">
+                {% for comic in con.comics %}
+                    <li>{{ comic.date|date:"d F Y" }} <a href="/comics/{{comic.sequence}}/">{{comic.title}}</a></li>
+                {% endfor %}
+            </ul>
+    {% endfor %}
 </div>
+{% endfor %}
+<div id="single" class="contribinfo">
+    <h4>Other Contributors</h4>
+    {% for c in single|dictsort:"aka" %}
+        <p class="contrib" id="{{ c.contribution.id }}">{{ c.contribution.aka }} {{ c.contribution.contribution_type }}
+            {{ c.contribution.content }}</p>
+            <ul class="nav">
+                {% for comic in c.comics %}
+                    <li>{{ comic.date|date:"d F Y"}} <a href="/comics/{{comic.sequence}}/">{{ comic.title }}</a></li>
+                {% endfor %}
+            </ul>
+    {% endfor %}
+</div>
+
 </div>
 {% endblock%}
 
-{% block extranav %}
-    
-{% endblock %}
+{% block sidebar %}
+<h2>Contributions to Name Removed</h2>
+<p>It's fun and easy to contribute!</p>
+<h3>How to contribute</h3>
+<p class="nrccs">All you need to do is visit the <a href="/contribute/submit/">NAME REMOVED CONDUCIVE CONTRIBUTION SYSTEM</a><br>
+    Try it out!</p>
+<p>Simultaneously, scope out <a href="/comics/220/">THIS blank comic</a>, add some text, and mail it in! (fourthpanel at nameremoved dot com) It will almost certainly be posted. Amazing interactivity!</p>
 
-{% block pageinfo %}
-<h2>Contribute to Name Removed!</h2>
-<p>It's fun and easy!</p>
 {% endblock %}
