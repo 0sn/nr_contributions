@@ -21,7 +21,7 @@ a:hover dd {border-color: #AAA; background: #EEE;}
             <h1>NAME REMOVED suggestions</h1>
 <dl>
 {% for contrib in contribs %}
-<a href="/admin/contributions/contribution/{{ contrib.id }}/"><dt><span>{{ contrib.submitted}}</span>{{ contrib.aka }} </dt>
+<a href="../contribution/{{ contrib.id }}/"><dt><span>{{ contrib.submitted}}</span>{{ contrib.aka }} </dt>
 <dd>{{ contrib.content }}</dd></a>
 {% endfor %}
 </dl>
