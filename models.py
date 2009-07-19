@@ -26,9 +26,6 @@ def get_None_contributor():
     )
     return obj
 
-from django.db.models.signals import post_save
-from nr_contributions.signals import contribution_notification
-
 class Contribution(models.Model):
     CONTRIBUTION_TYPES = (
         ('suggested', 'suggested'),
@@ -62,4 +59,8 @@ class Contribution(models.Model):
         else: return False
     is_contributor.boolean = True
     
-post_save.connect(contribution_notification, Contribution)
+from django.db.models.signals import post_save
+from nr_contributions.signals import contribution_notification
+from django.conf import settings
+if not settings.DEBUG:
+    post_save.connect(contribution_notification, Contribution)
