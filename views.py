@@ -69,11 +69,15 @@ class ContributionForm(ModelForm):
         model = Contribution
         fields = ('aka', 'content')
 
+from nr_contributions.signals import nr_contrib_added
+def send_contribution_notification(contribution):
+    nr_contrib_added.send(sender=Contribution,contribution=contribution)
+
 def submit(request):
     if request.method == 'POST':
         form = ContributionForm(request.POST)
         if form.is_valid():
-            form.save()
+            send_contribution_notification(form.save())
             return HttpResponseRedirect('/contribute/thanks/')
     else:
         form = ContributionForm()
@@ -84,7 +88,7 @@ def submitjs(request):
     if request.method == 'POST':
         form = ContributionForm(request.POST)
         if form.is_valid():
-            form.save()
+            send_contribution_notification(form.save())
             return HttpResponse("<span class='thanks'>THANK YOU FOR YOUR SUGGESTION</span>")
     else:
         form = ContributionForm()

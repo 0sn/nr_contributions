@@ -59,8 +59,3 @@ class Contribution(models.Model):
         else: return False
     is_contributor.boolean = True
     
-from django.db.models.signals import post_save
-from nr_contributions.signals import contribution_notification
-from django.conf import settings
-if not settings.DEBUG:
-    post_save.connect(contribution_notification, Contribution)
