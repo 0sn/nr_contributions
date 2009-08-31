@@ -16,7 +16,7 @@ def contribution_notification(sender, contribution, **kwargs):
             prowl_api.post(
                 application=site,
                 event="New Contribution",
-                description=str(instance)
+                description=str(contribution)
             )
         except Exception:
             pass
