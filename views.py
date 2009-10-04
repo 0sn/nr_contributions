@@ -106,3 +106,12 @@ def report(request):
         {'contribs': Contribution.objects.all().filter(flagged = False, contribution_type = 'suggested').order_by("-submitted")},
         request
     )
+
+@staff_member_required
+def flagged_report(request):
+    """makes the flagged but unused suggestions report"""
+    return render_with_request(
+        'admin/nr_contributions/report.html',
+        {'contribs': Contribution.objects.all().filter(flagged=True,contribution_type='suggested',comic=None).order_by("-submitted")},
+        request
+    )
