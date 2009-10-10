@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.db import models
 from models import Contribution, Contributor
 
+
 class ContributionAdmin(admin.ModelAdmin):
     list_display = ('submitted', 'aka', 'contribution_type', 'content','flagged', 'contributor', 'used')
     list_display_links = ('aka','contribution_type', 'content')
@@ -23,6 +24,17 @@ class ContributionAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
         }),
     )
+    
+    def flag_contribution(self, request, queryset):
+        rows_updated = queryset.update(flagged=True)
+        if rows_updated == 1:
+            message_bit = "1 contribution was"
+        else:
+            message_bit = '%s contributions were' % rows_updated
+        self.message_user(request,"%s flagged." % message_bit)
+    flag_contribution.short_description = "Flag selected contributions"
+    
+    actions = [flag_contribution]
     
     def used(self, obj):
         """
