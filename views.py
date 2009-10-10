@@ -103,7 +103,8 @@ def report(request):
     """makes the unused suggestions report"""
     return render_with_request(
         'admin/nr_contributions/report.html',
-        {'contribs': Contribution.objects.all().filter(flagged = False, contribution_type = 'suggested').order_by("-submitted")},
+        {'flagged': Contribution.objects.all().filter(flagged=True,contribution_type='suggested',comic=None).order_by("-submitted"),
+        'unflagged': Contribution.objects.all().filter(flagged = False, contribution_type = 'suggested').order_by("-submitted")},
         request
     )
 
