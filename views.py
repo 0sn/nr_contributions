@@ -106,7 +106,7 @@ def report(request):
         {
             'flagged': Contribution.objects.all().filter(flagged=True,contribution_type='suggested',comic=None).order_by("-submitted"),
             'unflagged': Contribution.objects.all().filter(flagged = False, contribution_type = 'suggested').order_by("-submitted"),
-            'recent': Contribution.objects.all().filter(flagged=True,contribution_type='suggested').exclude(comic=None).order_by("-comic__date")[:10],
+            'recent': Contribution.objects.all().filter(flagged=True,contribution_type='suggested').exclude(comic=None).order_by("-comic__date")[:30],
         },
         request
     )
